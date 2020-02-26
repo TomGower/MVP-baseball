@@ -11,6 +11,9 @@ class App extends React.Component {
       wasScore: 0,
       currentInning: 1,
       currentOut: 0,
+      runner1: false,
+      runner2: false,
+      runner3: false,
       homeTeam: 1,
       wasBatters: [
         {name: 'Turner', kRate: .198594, bbRate: .075571, gbRate: .90, hrRate: .099, babip: .348, xbRate: .308824},
@@ -125,6 +128,52 @@ class App extends React.Component {
       this.setState({
         currentOut: outs
       });
+    } else if (result === 'walk') {
+      if (runner1 && runner2 && runner3) {
+        //incremenet current team's score, leave runner1/2/3 unchanged
+      } else if (runner1 && runner2) {
+        this.setState({runner3: true});
+      } else if (runner1) {
+        this.setState({runner2: true})
+      } else {
+        this.setState({
+          runner1: true
+        })
+      }
+    } else if (result === 'single') {
+      if (runner1 && runner2 && runner3) {
+        //incremenet current team's score, leave runner 1/2/3 unchanged
+      } else if (runner1 && runner2) {
+        this.setState({runner3: true})
+      } else if (runner2 && runner3) {
+        this.setState({
+          runner1: true,
+          runner2: false,
+          //increment current team's score
+        })
+      } else if (runner1 && runner3) {
+        this.setState({
+          runner2: true,
+          runner3: false,
+          //increment current team's score
+        })
+      } else if (runner1) {
+        this.setState({runner2: true})
+      } else if (runner2) {
+        this.setState({
+          runner1: true,
+          runner2: false,
+          runner3: true
+        })
+      } else if (runner3) {
+        this.setState({
+          runner1: true,
+          runner3: false,
+          //incremenet current team's score
+        })
+      } else {
+        this.setState({runner1: true})
+      }
     }
     if (this.state.currentInning % 2 === 1) {
       let oldLineup = this.state.wasLineup + 1;
