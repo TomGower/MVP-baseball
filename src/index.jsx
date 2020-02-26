@@ -5,29 +5,50 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      wasLineup: 0,
+      houLineup: 0,
       houScore: 0,
       wasScore: 0,
       currentInning: 1,
+      currentOut: 0,
       homeTeam: 1,
-      wasBatters: ['Turner', 'Eaton', 'Rendon', 'Soto', 'Kendrick', 'Cabrera', 'Zimmerman', 'Suzuki', 'Robles'],
-      houBatters: ['Springer', 'Altuve', 'Brantley', 'Bregman', 'Gurriel', 'Alvarez', 'Correa', 'Chirinos', 'Reddick'],
+      wasBatters: [
+        {name: 'Turner', kRate: .198594, bbRate: .075571, gbRate: .90, hrRate: .099, babip: .348, xbRate: .308824},
+        {name: 'Eaton', kRate: .161585, bbRate: .099085, gbRate: .66, hrRate: .064, babip: .319, xbRate: .223776},
+        {name: 'Rendon', kRate: .133127, bbRate: .123839, gbRate: .50, hrRate: .127, babip: .323, xbRate: .335714},
+        {name: 'Soto', kRate: .200303, bbRate: .163885, gbRate: .73, hrRate: .153, babip: .312, xbRate: .310924},
+        {name: 'Kendrick', kRate: .132432, bbRate: .072973, gbRate: .94, hrRate: .124, babip: .359, xbRate: .244898},
+        {name: 'Cabrera', kRate: .123288, bbRate: .130137, gbRate: .67, hrRate: .095, babip: .330, xbRate: .323529},
+        {name: 'Zimmerman', kRate: .205263, bbRate: .089474, gbRate: .89, hrRate: .097, babip: .297, xbRate: .236842},
+        {name: 'Suzuki', kRate: .116505, bbRate: .064725, gbRate: .51, hrRate: .121, babip: .248, xbRate: .192982},
+        {name: 'Robles', kRate: .226904, bbRate: .056726, gbRate: .65, hrRate: .088, babip: .310, xbRate: .295082}],
+      houBatters: [
+        {name: 'Springer', kRate: .203237, bbRate: .120504, gbRate: .80, hrRate: .211, babip: .305, xbRate: .227723},
+        {name: 'Altuve', kRate: .149635, bbRate: .074818, gbRate: .99, hrRate: .174, babip: .303, xbRate: .254237},
+        {name: 'Brantley', kRate: .103611, bbRate: .080063, gbRate: .84, hrRate: .086, babip: .320, xbRate: .267516},
+        {name: 'Bregman', kRate: .120290, bbRate: .172464, gbRate: .70, hrRate: .146, babip: .281, xbRate: .317073},
+        {name: 'Gurriel', kRate: .106209, bbRate: .060458, gbRate: .63, hrRate: .122, babip: .289, xbRate: .306569},
+        {name: 'Alvarez', kRate: .254743, bbRate: .140921, gbRate: .60, hrRate: .211, babip: .366, xbRate: .366197},
+        {name: 'Correa', kRate: .233645, bbRate: .109034, gbRate: .63, hrRate: .188, babip: .303, xbRate: .298246},
+        {name: 'Chirinos', kRate: .286041, bbRate: .116705, gbRate: .56, hrRate: .125, babip: .306, xbRate: .328571},
+        {name: 'Reddick', kRate: .12, bbRate: .065455, gbRate: .67, hrRate: .061, babip: .288, xbRate: .177419}],
       wasPitchers: {
-        1: 'Scherzer',
-        2: 'Strasburg',
-        3: 'Sanchez',
-        4: 'Corbin',
-        5: 'Scherzer',
-        6: 'Strasburg',
-        7: 'Sanchez'
+        1: {name: 'Scherzer', kRate: .350649, bbRate: .047619, gbRate: .91, hrRate: .084, babip: .322, xbRate: .34127},
+        2: {name: 'Strasburg', kRate: .298454, bbRate: .066587, gbRate: 1.05, hrRate: .108, babip: .276, xbRate: .218978},
+        3: {name: 'Sanchez', kRate: .188202, bbRate: .081461, gbRate: .63, hrRate: .079, babip: .266, xbRate: .312977},
+        4: {name: 'Corbin', kRate: .28503, bbRate: .083832, gbRate: .99, hrRate: .101, babip: .295, xbRate: .262069},
+        5: {name: 'Scherzer', kRate: .350649, bbRate: .047619, gbRate: .91, hrRate: .084, babip: .322, xbRate: .34127},
+        6: {name: 'Strasburg', kRate: .298454, bbRate: .066587, gbRate: 1.05, hrRate: .108, babip: .276, xbRate: .218978},
+        7: {name: 'Sanchez', kRate: .188202, bbRate: .081461, gbRate: .63, hrRate: .079, babip: .266, xbRate: .312977},
       },
       houPitchers: {
-        1: 'Cole',
-        2: 'Verlander',
-        3: 'Greinke',
-        4: 'bullpen',
-        5: 'Cole',
-        6: 'Verlander',
-        7: 'Greinke'
+        1: {name: 'Cole', kRate: .399021, bbRate: .062424, gbRate: .67, hrRate: .127, babip: .276, xbRate: .274336},
+        2: {name: 'Verlander', kRate: .354191, bbRate: .049587, gbRate: .57, hrRate: .136, babip: .219, xbRate: .346535},
+        3: {name: 'Greinke', kRate: .243204, bbRate: .03629, gbRate: 1.06, hrRate: .075, babip: .291, xbRate: .211538},
+        4: {name: 'bullpen', kRate: .243204, bbRate: .084742, gbRate: .83, hrRate: .122, babip: .272, xbRate: .260513},
+        5: {name: 'Cole', kRate: .399021, bbRate: .062424, gbRate: .67, hrRate: .127, babip: .276, xbRate: .274336},
+        6: {name: 'Verlander', kRate: .354191, bbRate: .049587, gbRate: .57, hrRate: .136, babip: .219, xbRate: .346535},
+        7: {name: 'Greinke', kRate: .243204, bbRate: .03629, gbRate: 1.06, hrRate: .075, babip: .291, xbRate: .211538},
       },
       wasWins: 0,
       houWins: 0,
@@ -49,19 +70,27 @@ class App extends React.Component {
         babip: .312,
         xbRate: .310924
       },
+      wasBatter: {name: 'Turner', kRate: .198594, bbRate: .075571, gbRate: .90, hrRate: .099, babip: .348, xbRate: .308824},
+      houBatter: {name: 'Springer', kRate: .203237, bbRate: .120504, gbRate: .80, hrRate: .211, babip: .305, xbRate: .227723}
     };
     this.onClick = this.onClick.bind(this);
   }
 
   componentDidMount() {
     let currentGame = this.state.wasWins + this.state.houWins + 1;
+    let wasPosition = this.state.wasLineup % 9;
+    let houPosition = this.state.houLineup % 9;
     this.setState({
       houPitcher: this.state.houPitchers[currentGame],
-      wasPitcher: this.state.wasPitchers[currentGame]
+      wasPitcher: this.state.wasPitchers[currentGame],
+      wasBatter: this.state.wasBatters[wasPosition],
+      houBatter: this.state.houBatters[houPosition]
     })
   }
 
   onClick(e) {
+    console.log(this.state.wasBatter.name);
+    console.log(this.state.wasLineup);
     e.preventDefault();
     let result;
     let randVal = Math.random();
@@ -90,8 +119,28 @@ class App extends React.Component {
     } else {
       result = 'batted out';
     }
-    console.log(kVal, walkVal, hrVal, doubleVal, singleVal);
     console.log(result);
+    if (result === 'strikeout' || result === 'batted out') {
+      let outs = this.state.currentOut + 1;
+      this.setState({
+        currentOut: outs
+      });
+    }
+    if (this.state.currentInning % 2 === 1) {
+      let oldLineup = this.state.wasLineup + 1;
+      this.setState({
+        wasBatter: this.state.wasBatters[oldLineup % 9],
+        wasLineup: oldLineup,
+        currentBatter: this.state.wasBatters[oldLineup % 9]
+      });
+    } else {
+      let oldLineup = this.state.houLineup + 1;
+      this.setState({
+        houBatter: this.state.houBatters[oldLineup % 9],
+        houLineup: oldLineup,
+        currentBatter: this.state.houBatters[oldLineup % 9]
+      });
+    }
   }
 
   render() {
@@ -103,8 +152,8 @@ class App extends React.Component {
         Inning: {Math.ceil(this.state.currentInning % 2)} <br />
         WSH P: {this.state.wasPitcher} <br />
         HOU P: {this.state.houPitcher} <br />
-        Next WSH batter: {this.state.wasBatter} <br />
-        Next HOU batter: {this.state.houBatter} <br />
+        Next WSH batter: {this.state.wasBatter.name} <br />
+        Next HOU batter: {this.state.houBatter.name} <br />
         <button onClick={this.onClick}>Add Batter</button>
       </div>
     )
