@@ -16,7 +16,6 @@ class App extends React.Component {
       runner1: false,
       runner2: false,
       runner3: false,
-      homeTeam: 1,
       wasBatters: [
         {name: 'Turner', kRate: .198594, bbRate: .075571, gbRate: .90, hrRate: .099, babip: .348, xbRate: .308824},
         {name: 'Eaton', kRate: .161585, bbRate: .099085, gbRate: .66, hrRate: .064, babip: .319, xbRate: .223776},
@@ -57,22 +56,8 @@ class App extends React.Component {
       ],
       houPitcher: {name: 'Cole', kRate: .399021, bbRate: .062424, gbRate: .67, hrRate: .127, babip: .276, xbRate: .274336},
       wasPitcher: {name: 'Scherzer', kRate: .350649, bbRate: .047619, gbRate: .91, hrRate: .084, babip: .322, xbRate: .34127},
-      currentPitcher: {
-        kRate: .39902,
-        bbRate: .062424,
-        gbRate: .67,
-        hrRate: .127,
-        babip: .276,
-        xbRate: .274336
-      },
-      currentBatter: {
-        kRate: .200303,
-        bbRate: .163885,
-        gbRate: .73,
-        hrRate: .153,
-        babip: .312,
-        xbRate: .310924
-      },
+      currentPitcher: {name: 'Cole', kRate: .399021, bbRate: .062424, gbRate: .67, hrRate: .127, babip: .276, xbRate: .274336},
+      currentBatter: {name: 'Turner', kRate: .198594, bbRate: .075571, gbRate: .90, hrRate: .099, babip: .348, xbRate: .308824},
       wasBatter: {name: 'Turner', kRate: .198594, bbRate: .075571, gbRate: .90, hrRate: .099, babip: .348, xbRate: .308824},
       houBatter: {name: 'Springer', kRate: .203237, bbRate: .120504, gbRate: .80, hrRate: .211, babip: .305, xbRate: .227723}
     };
@@ -91,9 +76,8 @@ class App extends React.Component {
     })
   }
 
-  winnerCheck() {
-    let inning = this.state.currentInning;
-    if ((inning === 18) && (this.state.houScore > this.state.wasScore)) {
+  winnerCheck(oldInning) {
+    if ((oldInning === 17) && (this.state.houScore > this.state.wasScore)) {
       console.log('game over, Astros won');
       let currentGame = this.state.wasWins + this.state.houWins + 1;
       let astrosWins = this.state.houWins + 1;
@@ -119,7 +103,8 @@ class App extends React.Component {
           runner3: false,
         })
       }
-    } else if ((inning > 18 && inning % 2 === 1) && (this.state.houScore > this.state.wasScore)) {
+      return true;
+    } else if ((oldInning > 17 && oldInning % 2 === 0) && (this.state.houScore > this.state.wasScore)) {
       console.log('game over, Astros won');
       let currentGame = this.state.wasWins + this.state.houWins + 1;
       let astrosWins = this.state.houWins + 1;
@@ -145,7 +130,8 @@ class App extends React.Component {
           runner3: false,
         })
       }
-    } else if ((inning > 18 && inning % 2 === 1) && (this.state.wasScore > this.state.houScore)) {
+      return true;
+    } else if ((oldInning > 17 && oldInning % 2 === 0) && (this.state.wasScore > this.state.houScore)) {
       console.log('game over, Nationals won');
       let currentGame = this.state.wasWins + this.state.houWins + 1;
       let natsWins = this.state.wasWins + 1;
@@ -171,6 +157,9 @@ class App extends React.Component {
           runner3: false,
         })
       }
+      return true;
+    } else {
+      return false;
     }
   }
 
@@ -486,33 +475,35 @@ class App extends React.Component {
           });
         }
       } else {
-        this.winnerCheck();
-        if (oldInning % 2 === 1) {
-          let oldLineup = this.state.wasLineup + 1;
-          this.setState({
-            currentOut: 0,
-            runner1: false,
-            runner2: false,
-            runner3: false,
-            wasBatter: this.state.wasBatters[oldLineup % 9],
-            wasLineup: oldLineup,
-            currentBatter: this.state.houBatter,
-            currentPitcher: this.state.wasPitcher,
-            currentInning: oldInning + 1
-          })
-        } else {
-          let oldLineup = this.state.houLineup + 1;
-          this.setState({
-            currentOut: 0,
-            runner1: false,
-            runner2: false,
-            runner3: false,
-            houBatter: this.state.houBatters[oldLineup % 9],
-            houLineup: oldLineup,
-            currentBatter: this.state.wasBatter,
-            currentPitcher: this.state.houPitcher,
-            currentInning: oldInning + 1
-          })
+        this.winnerCheck(oldInning);
+        if (this.winnerCheck(oldInning) === false) {
+          if (oldInning % 2 === 1) {
+            let oldLineup = this.state.wasLineup + 1;
+            this.setState({
+              currentOut: 0,
+              runner1: false,
+              runner2: false,
+              runner3: false,
+              wasBatter: this.state.wasBatters[oldLineup % 9],
+              wasLineup: oldLineup,
+              currentBatter: this.state.houBatter,
+              currentPitcher: this.state.wasPitcher,
+              currentInning: oldInning + 1
+            })
+          } else {
+            let oldLineup = this.state.houLineup + 1;
+            this.setState({
+              currentOut: 0,
+              runner1: false,
+              runner2: false,
+              runner3: false,
+              houBatter: this.state.houBatters[oldLineup % 9],
+              houLineup: oldLineup,
+              currentBatter: this.state.wasBatter,
+              currentPitcher: this.state.houPitcher,
+              currentInning: oldInning + 1
+            })
+          }
         }
       }
     } else {
@@ -542,7 +533,7 @@ class App extends React.Component {
         WSH: {this.state.wasScore} <br />
         HOU: {this.state.houScore} <br />
         Inning: {Math.ceil(this.state.currentInning / 2)} <br />
-        WSH P: {this.statewasPitcher.name} <br />
+        WSH P: {this.state.wasPitcher.name} <br />
         HOU P: {this.state.houPitcher.name} <br />
         Next WSH batter: {this.state.wasBatter.name} <br />
         Next HOU batter: {this.state.houBatter.name} <br />
