@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import WinningBanner from './components/winningBanner.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -59,7 +60,8 @@ class App extends React.Component {
       currentPitcher: {name: 'Cole', kRate: .399021, bbRate: .062424, gbRate: .67, hrRate: .127, babip: .276, xbRate: .274336},
       currentBatter: {name: 'Turner', kRate: .198594, bbRate: .075571, gbRate: .90, hrRate: .099, babip: .348, xbRate: .308824},
       wasBatter: {name: 'Turner', kRate: .198594, bbRate: .075571, gbRate: .90, hrRate: .099, babip: .348, xbRate: .308824},
-      houBatter: {name: 'Springer', kRate: .203237, bbRate: .120504, gbRate: .80, hrRate: .211, babip: .305, xbRate: .227723}
+      houBatter: {name: 'Springer', kRate: .203237, bbRate: .120504, gbRate: .80, hrRate: .211, babip: .305, xbRate: .227723},
+      seriesWinner: null
     };
     this.onClick = this.onClick.bind(this);
   }
@@ -532,12 +534,13 @@ class App extends React.Component {
         Series Status: WSH {this.state.wasWins}-{this.state.houWins} HOU (best of seven) <br />
         WSH: {this.state.wasScore} <br />
         HOU: {this.state.houScore} <br />
-        Inning: {Math.ceil(this.state.currentInning / 2)} <br />
+        Inning: {Math.ceil(this.state.currentInning / 2)} {this.state.currentInning % 2 === 1 ? 'Top' : 'Btm'} <br />
         WSH P: {this.state.wasPitcher.name} <br />
         HOU P: {this.state.houPitcher.name} <br />
         Next WSH batter: {this.state.wasBatter.name} <br />
         Next HOU batter: {this.state.houBatter.name} <br />
         <button onClick={this.onClick}>Add Batter</button> <br />
+        <WinningBanner seriesWinner={this.state.seriesWinner} />
         <h6>Thanks to baseball-reference.com for providing the data to create the pitcher-batter interactions.</h6>
       </div>
     )
