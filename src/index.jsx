@@ -532,18 +532,22 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        Series Status: WSH {this.state.wasWins}-{this.state.houWins} HOU (best of seven) <br />
-        WSH: {this.state.wasScore} <br />
-        HOU: {this.state.houScore} <br />
-        Inning: {Math.ceil(this.state.currentInning / 2)} {this.state.currentInning % 2 === 1 ? 'Top' : 'Btm'} <br />
-        WSH P: {this.state.wasPitcher.name} <br />
-        HOU P: {this.state.houPitcher.name} <br />
+        <h2 align="center">2019 World Serious</h2>
+        <h5 align="center">Series Status: WSH {this.state.wasWins}-{this.state.houWins} HOU (best of seven)</h5>
+        WSH pitcher: {this.state.wasPitcher.name} <br />
+        HOU pitcher: {this.state.houPitcher.name} <br />
         Next WSH batter: {this.state.wasBatter.name} <br />
         Next HOU batter: {this.state.houBatter.name} <br />
+        <br />
+        <br />
+        Current pitcher: {this.state.currentPitcher.name} <br />
+        Current batter: {this.state.currentBatter.name} <br />
+
+        Inning: {Math.ceil(this.state.currentInning / 2)}{this.state.currentInning % 2 === 1 ? <span>&#9650;</span> : <span>&#9660;</span>} <br />
+        WSH: {this.state.wasScore} <br />
+        HOU: {this.state.houScore} <br />
         Current outs: {this.state.currentOut} <br />
         Bases: {this.state.runner1 ? 'O' : '_'}-{this.state.runner2 ? 'O' : '_'}-{this.state.runner3 ? 'O' : '_'} <br />
-        Current batter: {this.state.currentBatter.name} <br />
-        Current pitcher: {this.state.currentPitcher.name} <br />
         <button onClick={this.onClick}>Batter Up!</button> <br />
         <WinningBanner seriesWinner={this.state.seriesWinner} />
         <h6>Thanks to baseball-reference.com for providing the data to create the pitcher-batter interactions.</h6>
