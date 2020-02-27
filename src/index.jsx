@@ -80,7 +80,7 @@ class App extends React.Component {
 
   winnerCheck(oldInning) {
     if ((oldInning === 17) && (this.state.houScore > this.state.wasScore)) {
-      console.log('game over, Astros won');
+      console.log(`game over, Astros won, ${this.state.houScore}-${this.state.wasScore}`);
       let currentGame = this.state.wasWins + this.state.houWins + 1;
       let astrosWins = this.state.houWins + 1;
       if (astrosWins === 4) {
@@ -107,7 +107,7 @@ class App extends React.Component {
       }
       return true;
     } else if ((oldInning > 17 && oldInning % 2 === 0) && (this.state.houScore > this.state.wasScore)) {
-      console.log('game over, Astros won');
+      console.log(`game over, Astros won, ${this.state.houScore}-${this.state.wasScore}`);
       let currentGame = this.state.wasWins + this.state.houWins + 1;
       let astrosWins = this.state.houWins + 1;
       if (astrosWins === 4) {
@@ -134,7 +134,7 @@ class App extends React.Component {
       }
       return true;
     } else if ((oldInning > 17 && oldInning % 2 === 0) && (this.state.wasScore > this.state.houScore)) {
-      console.log('game over, Nationals won');
+      console.log(`game over, Nationals won ${this.state.wasScore}-${this.state.houScore}`);
       let currentGame = this.state.wasWins + this.state.houWins + 1;
       let natsWins = this.state.wasWins + 1;
       if (natsWins === 4) {
@@ -540,7 +540,11 @@ class App extends React.Component {
         HOU P: {this.state.houPitcher.name} <br />
         Next WSH batter: {this.state.wasBatter.name} <br />
         Next HOU batter: {this.state.houBatter.name} <br />
-        <button onClick={this.onClick}>Add Batter</button> <br />
+        Current outs: {this.state.currentOut} <br />
+        Bases: {this.state.runner1 ? 'O' : '_'}-{this.state.runner2 ? 'O' : '_'}-{this.state.runner3 ? 'O' : '_'} <br />
+        Current batter: {this.state.currentBatter.name} <br />
+        Current pitcher: {this.state.currentPitcher.name} <br />
+        <button onClick={this.onClick}>Batter Up!</button> <br />
         <WinningBanner seriesWinner={this.state.seriesWinner} />
         <h6>Thanks to baseball-reference.com for providing the data to create the pitcher-batter interactions.</h6>
       </div>
