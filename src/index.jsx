@@ -5,6 +5,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      wasWins: 0,
+      houWins: 0,
       wasLineup: 0,
       houLineup: 0,
       houScore: 0,
@@ -35,28 +37,26 @@ class App extends React.Component {
         {name: 'Correa', kRate: .233645, bbRate: .109034, gbRate: .63, hrRate: .188, babip: .303, xbRate: .298246},
         {name: 'Chirinos', kRate: .286041, bbRate: .116705, gbRate: .56, hrRate: .125, babip: .306, xbRate: .328571},
         {name: 'Reddick', kRate: .12, bbRate: .065455, gbRate: .67, hrRate: .061, babip: .288, xbRate: .177419}],
-      wasPitchers: {
-        1: {name: 'Scherzer', kRate: .350649, bbRate: .047619, gbRate: .91, hrRate: .084, babip: .322, xbRate: .34127},
-        2: {name: 'Strasburg', kRate: .298454, bbRate: .066587, gbRate: 1.05, hrRate: .108, babip: .276, xbRate: .218978},
-        3: {name: 'Sanchez', kRate: .188202, bbRate: .081461, gbRate: .63, hrRate: .079, babip: .266, xbRate: .312977},
-        4: {name: 'Corbin', kRate: .28503, bbRate: .083832, gbRate: .99, hrRate: .101, babip: .295, xbRate: .262069},
-        5: {name: 'Scherzer', kRate: .350649, bbRate: .047619, gbRate: .91, hrRate: .084, babip: .322, xbRate: .34127},
-        6: {name: 'Strasburg', kRate: .298454, bbRate: .066587, gbRate: 1.05, hrRate: .108, babip: .276, xbRate: .218978},
-        7: {name: 'Sanchez', kRate: .188202, bbRate: .081461, gbRate: .63, hrRate: .079, babip: .266, xbRate: .312977},
-      },
-      houPitchers: {
-        1: {name: 'Cole', kRate: .399021, bbRate: .062424, gbRate: .67, hrRate: .127, babip: .276, xbRate: .274336},
-        2: {name: 'Verlander', kRate: .354191, bbRate: .049587, gbRate: .57, hrRate: .136, babip: .219, xbRate: .346535},
-        3: {name: 'Greinke', kRate: .243204, bbRate: .03629, gbRate: 1.06, hrRate: .075, babip: .291, xbRate: .211538},
-        4: {name: 'bullpen', kRate: .243204, bbRate: .084742, gbRate: .83, hrRate: .122, babip: .272, xbRate: .260513},
-        5: {name: 'Cole', kRate: .399021, bbRate: .062424, gbRate: .67, hrRate: .127, babip: .276, xbRate: .274336},
-        6: {name: 'Verlander', kRate: .354191, bbRate: .049587, gbRate: .57, hrRate: .136, babip: .219, xbRate: .346535},
-        7: {name: 'Greinke', kRate: .243204, bbRate: .03629, gbRate: 1.06, hrRate: .075, babip: .291, xbRate: .211538},
-      },
-      wasWins: 0,
-      houWins: 0,
-      houPitcher: null,
-      wasPitcher: null,
+      wasPitchers: [
+        {name: 'Scherzer', kRate: .350649, bbRate: .047619, gbRate: .91, hrRate: .084, babip: .322, xbRate: .34127},
+        {name: 'Strasburg', kRate: .298454, bbRate: .066587, gbRate: 1.05, hrRate: .108, babip: .276, xbRate: .218978},
+        {name: 'Sanchez', kRate: .188202, bbRate: .081461, gbRate: .63, hrRate: .079, babip: .266, xbRate: .312977},
+        {name: 'Corbin', kRate: .28503, bbRate: .083832, gbRate: .99, hrRate: .101, babip: .295, xbRate: .262069},
+        {name: 'Scherzer', kRate: .350649, bbRate: .047619, gbRate: .91, hrRate: .084, babip: .322, xbRate: .34127},
+        {name: 'Strasburg', kRate: .298454, bbRate: .066587, gbRate: 1.05, hrRate: .108, babip: .276, xbRate: .218978},
+        {name: 'Sanchez', kRate: .188202, bbRate: .081461, gbRate: .63, hrRate: .079, babip: .266, xbRate: .312977},
+      ],
+      houPitchers: [
+        {name: 'Cole', kRate: .399021, bbRate: .062424, gbRate: .67, hrRate: .127, babip: .276, xbRate: .274336},
+        {name: 'Verlander', kRate: .354191, bbRate: .049587, gbRate: .57, hrRate: .136, babip: .219, xbRate: .346535},
+        {name: 'Greinke', kRate: .243204, bbRate: .03629, gbRate: 1.06, hrRate: .075, babip: .291, xbRate: .211538},
+        {name: 'bullpen', kRate: .243204, bbRate: .084742, gbRate: .83, hrRate: .122, babip: .272, xbRate: .260513},
+        {name: 'Cole', kRate: .399021, bbRate: .062424, gbRate: .67, hrRate: .127, babip: .276, xbRate: .274336},
+        {name: 'Verlander', kRate: .354191, bbRate: .049587, gbRate: .57, hrRate: .136, babip: .219, xbRate: .346535},
+        {name: 'Greinke', kRate: .243204, bbRate: .03629, gbRate: 1.06, hrRate: .075, babip: .291, xbRate: .211538},
+      ],
+      houPitcher: {name: 'Cole', kRate: .399021, bbRate: .062424, gbRate: .67, hrRate: .127, babip: .276, xbRate: .274336},
+      wasPitcher: {name: 'Scherzer', kRate: .350649, bbRate: .047619, gbRate: .91, hrRate: .084, babip: .322, xbRate: .34127},
       currentPitcher: {
         kRate: .39902,
         bbRate: .062424,
@@ -80,7 +80,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    let currentGame = this.state.wasWins + this.state.houWins + 1;
+    let currentGame = this.state.wasWins + this.state.houWins;
     let wasPosition = this.state.wasLineup % 9;
     let houPosition = this.state.houLineup % 9;
     this.setState({
@@ -129,9 +129,13 @@ class App extends React.Component {
         currentOut: outs
       });
     } else if (result === 'walk') {
-      if (runner1 && runner2 && runner3) {
-        //incremenet current team's score, leave runner1/2/3 unchanged
-      } else if (runner1 && runner2) {
+      if (this.state.runner1 && this.state.runner2 && this.state.runner3) {
+        if (this.state.currentInning % 2 === 1) {
+          this.setState({wasScore: this.state.wasScore + 1})
+        } else {
+          this.setState({houScore: this.state.houScore + 1})
+        }
+      } else if (this.state.runner1 && this.state.runner2) {
         this.setState({runner3: true});
       } else if (runner1) {
         this.setState({runner2: true})
@@ -141,38 +145,249 @@ class App extends React.Component {
         })
       }
     } else if (result === 'single') {
-      if (runner1 && runner2 && runner3) {
-        //incremenet current team's score, leave runner 1/2/3 unchanged
-      } else if (runner1 && runner2) {
+      if (this.state.runner1 && this.state.runner2 && this.state.runner3) {
+        if (this.state.currentInning % 2 === 1) {
+          this.setState({wasScore: this.state.wasScore + 1})
+        } else {
+          this.setState({houScore: this.state.houScore + 1})
+        }
+      } else if (this.state.runner1 && this.state.runner2) {
         this.setState({runner3: true})
-      } else if (runner2 && runner3) {
-        this.setState({
-          runner1: true,
-          runner2: false,
-          //increment current team's score
-        })
-      } else if (runner1 && runner3) {
-        this.setState({
-          runner2: true,
-          runner3: false,
-          //increment current team's score
-        })
-      } else if (runner1) {
+      } else if (this.state.runner2 && this.state.runner3) {
+        if (this.state.currentInning % 2 === 1) {
+          this.setState({
+            wasScore: this.state.wasScore + 1,
+            runner1: true,
+            runner2: false
+          })
+        } else {
+          this.setState({
+            houScore: this.state.houScore + 1,
+            runner1: true,
+            runner2: false
+          })
+        }
+      } else if (this.state.runner1 && this.state.runner3) {
+        if (this.state.currentInning % 2 === 1) {
+          this.setState({
+            wasScore: this.state.wasScore + 1,
+            runner2: true,
+            runner3: false
+          })
+        } else {
+          this.setState({
+            houScore: this.state.houScore + 1,
+            runner2: true,
+            runner3: false
+          })
+        }
+      } else if (this.state.runner1) {
         this.setState({runner2: true})
-      } else if (runner2) {
+      } else if (this.state.runner2) {
         this.setState({
           runner1: true,
           runner2: false,
           runner3: true
         })
-      } else if (runner3) {
-        this.setState({
-          runner1: true,
-          runner3: false,
-          //incremenet current team's score
-        })
+      } else if (this.state.runner3) {
+        if (this.state.currentInning % 2 === 1) {
+          this.setState({
+            wasScore: this.state.wasScore + 1,
+            runner1: true,
+            runner3: false
+          })
+        } else {
+          this.setState({
+            houScore: this.state.houScore + 1,
+            runner1: true,
+            runner3: false
+          })
+        }
       } else {
         this.setState({runner1: true})
+      }
+    } else if (result === 'double') {
+      if (this.state.runner1 && this.state.runner2 && this.state.runner3) {
+        if (this.state.currentInning % 2 === 1) {
+          this.setState({
+            wasScore: this.state.wasScore + 2,
+            runner1: false
+          })
+        } else {
+          this.setState({
+            houScore: this.state.houScore + 2,
+            runner1: false
+          })
+        }
+      } else if (this.state.runner1 && this.state.runner2) {
+        if (this.state.currentInning % 2 === 1) {
+          this.setState({
+            wasScore: this.state.wasScore + 1,
+            runner1: false,
+            runner3: true
+          })
+        } else {
+          this.setState({
+            houScore: this.state.houScore + 1,
+            runner1: false,
+            runner3: true
+          })
+        }
+      } else if (this.state.runner2 && this.state.runner3) {
+        if (this.state.currentInning % 2 === 1) {
+          this.setState({
+            wasScore: this.state.wasScore + 2,
+            runner3: false
+          })
+        } else {
+          this.setState({
+            houScore: this.state.houScore + 1,
+            runner3: false
+          })
+        }
+      } else if (this.state.runner1 && this.state.runner3) {
+        if (this.state.currentInning % 2 === 1) {
+          this.setState({
+            wasScore: this.state.wasScore + 1,
+            runner1: false,
+            runner2: true
+          })
+        } else {
+          this.setState({
+            houScore: this.state.houScore + 1,
+            runner1: false,
+            runner2: true
+          })
+        }
+      } else if (this.state.runner1) {
+        this.setState({
+          runner2: true,
+          runner3: true
+        })
+      } else if (this.state.runner2) {
+        if (this.state.currentInning % 2 === 1) {
+          this.setState({wasScore: this.state.wasScore + 1})
+        } else {
+          this.setState({houScore: this.state.houScore + 1})
+        }
+      } else if (this.state.runner3) {
+        if (this.state.currentInning % 2 === 1) {
+          this.setState({
+            wasScore: this.state.wasScore + 1,
+            runner2: true,
+            runner3: false
+          })
+        } else {
+          this.setState({
+            houScore: this.state.houScore + 1,
+            runner2: true,
+            runner3: false
+          })
+        }
+      } else {
+        this.setState({runner2: true})
+      }
+    } else if (result === 'home run') {
+      if (this.state.runner1 && this.state.runner2 && this.state.runner3) {
+        if (this.state.currentInning % 2 === 1) {
+          this.setState({
+            wasScore: this.state.wasScore + 4,
+            runner1: false,
+            runner2: false,
+            runner3: false
+          })
+        } else {
+          this.setState({
+            houScore: this.state.houScore + 4,
+            runner1: false,
+            runner2: false,
+            runner3: false
+          })
+        }
+      } else if (this.state.runner1 && this.state.runner2) {
+        if (this.state.currentInning % 2 === 1) {
+          this.setState({
+            wasScore: this.state.wasScore + 3,
+            runner1: false,
+            runner2: false
+          })
+        } else {
+          this.setState({
+            houScore: this.state.houScore + 3,
+            runner1: false,
+            runner2: false
+          })
+        }
+      } else if (this.state.runner2 && this.state.runner3) {
+        if (this.state.currentInning % 2 === 1) {
+          this.setState({
+            wasScore: this.state.wasScore + 3,
+            runner2: false,
+            runner3: false
+          })
+        } else {
+          this.setState({
+            houScore: this.state.houScore + 3,
+            runner2: false,
+            runner3: false
+          })
+        }
+      } else if (this.state.runner1 && this.state.runner3) {
+        if (this.state.currentInning % 2 === 1) {
+          this.setState({
+            wasScore: this.state.wasScore + 3,
+            runner1: false,
+            runner3: false
+          })
+        } else {
+          this.setState({
+            houScore: this.state.houScore + 3,
+            runner1: false,
+            runner3: false
+          })
+        }
+      } else if (this.state.runner1) {
+        if (this.state.currentInning % 2 === 1) {
+          this.setState({
+            wasScore: this.state.wasScore + 2,
+            runner1: false
+          })
+        } else {
+          this.setState({
+            houScore: this.state.houScore + 2,
+            runner1: false
+          })
+        }
+      } else if (this.state.runner2) {
+        if (this.state.currentInning % 2 === 1) {
+          this.setState({
+            wasScore: this.state.wasScore + 2,
+            runner2: false
+          })
+        } else {
+          this.setState({
+            houScore: this.state.houScore + 2,
+            runner2: false
+          })
+        }
+      } else if (this.state.runner3) {
+        if (this.state.currentInning % 2 === 1) {
+          this.setState({
+            wasScore: this.state.wasScore + 2,
+            runner3: false
+          })
+        } else {
+          this.setState({
+            houScore: this.state.houScore + 2,
+            runner3: false
+          })
+        }
+      } else {
+        if (this.state.currentInning % 2 === 1) {
+          this.setState({wasScore: this.state.wasScore + 1})
+        } else {
+          this.setState({houScore: this.state.houScore + 1})
+        }
       }
     }
     if (this.state.currentInning % 2 === 1) {
@@ -199,11 +414,12 @@ class App extends React.Component {
         WSH: {this.state.wasScore} <br />
         HOU: {this.state.houScore} <br />
         Inning: {Math.ceil(this.state.currentInning % 2)} <br />
-        WSH P: {this.state.wasPitcher} <br />
-        HOU P: {this.state.houPitcher} <br />
+        WSH P: {this.state.wasPitcher.name} <br />
+        HOU P: {this.state.houPitcher.name} <br />
         Next WSH batter: {this.state.wasBatter.name} <br />
         Next HOU batter: {this.state.houBatter.name} <br />
-        <button onClick={this.onClick}>Add Batter</button>
+        <button onClick={this.onClick}>Add Batter</button> <br />
+        <h6>Thanks to baseball-reference.com for providing the data to create the pitcher-batter interactions.</h6>
       </div>
     )
   }
