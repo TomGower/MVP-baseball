@@ -196,7 +196,7 @@ class App extends React.Component {
     }
     console.log(result);
     if (result === 'walk') {
-      if (this.state.runner1 && this.state.runner2 && this.state.runner3) {
+      if ((this.state.runner1 && this.state.runner2) && this.state.runner3) {
         if (this.state.currentInning % 2 === 1) {
           this.setState({wasScore: this.state.wasScore + 1})
         } else {
@@ -210,7 +210,7 @@ class App extends React.Component {
         this.setState({runner1: true})
       }
     } else if (result === 'single') {
-      if (this.state.runner1 && this.state.runner2 && this.state.runner3) {
+      if ((this.state.runner1 && this.state.runner2) && this.state.runner3) {
         if (this.state.currentInning % 2 === 1) {
           this.setState({wasScore: this.state.wasScore + 1})
         } else {
@@ -272,7 +272,7 @@ class App extends React.Component {
         this.setState({runner1: true})
       }
     } else if (result === 'double') {
-      if (this.state.runner1 && this.state.runner2 && this.state.runner3) {
+      if ((this.state.runner1 && this.state.runner2) && this.state.runner3) {
         if (this.state.currentInning % 2 === 1) {
           this.setState({
             wasScore: this.state.wasScore + 2,
@@ -306,7 +306,7 @@ class App extends React.Component {
           })
         } else {
           this.setState({
-            houScore: this.state.houScore + 1,
+            houScore: this.state.houScore + 2,
             runner3: false
           })
         }
@@ -326,6 +326,7 @@ class App extends React.Component {
         }
       } else if (this.state.runner1) {
         this.setState({
+          runner1: false,
           runner2: true,
           runner3: true
         })
