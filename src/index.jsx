@@ -92,8 +92,6 @@ class App extends React.Component {
   }
 
   onClick(e) {
-    console.log(this.state.wasBatter.name);
-    console.log(this.state.wasLineup);
     e.preventDefault();
     let result;
     let randVal = Math.random();
@@ -123,12 +121,7 @@ class App extends React.Component {
       result = 'batted out';
     }
     console.log(result);
-    if (result === 'strikeout' || result === 'batted out') {
-      let outs = this.state.currentOut + 1;
-      this.setState({
-        currentOut: outs
-      });
-    } else if (result === 'walk') {
+    if (result === 'walk') {
       if (this.state.runner1 && this.state.runner2 && this.state.runner3) {
         if (this.state.currentInning % 2 === 1) {
           this.setState({wasScore: this.state.wasScore + 1})
@@ -137,12 +130,10 @@ class App extends React.Component {
         }
       } else if (this.state.runner1 && this.state.runner2) {
         this.setState({runner3: true});
-      } else if (runner1) {
+      } else if (this.state.runner1) {
         this.setState({runner2: true})
       } else {
-        this.setState({
-          runner1: true
-        })
+        this.setState({runner1: true})
       }
     } else if (result === 'single') {
       if (this.state.runner1 && this.state.runner2 && this.state.runner3) {
@@ -389,21 +380,56 @@ class App extends React.Component {
           this.setState({houScore: this.state.houScore + 1})
         }
       }
-    }
-    if (this.state.currentInning % 2 === 1) {
-      let oldLineup = this.state.wasLineup + 1;
-      this.setState({
-        wasBatter: this.state.wasBatters[oldLineup % 9],
-        wasLineup: oldLineup,
-        currentBatter: this.state.wasBatters[oldLineup % 9]
-      });
-    } else {
-      let oldLineup = this.state.houLineup + 1;
-      this.setState({
-        houBatter: this.state.houBatters[oldLineup % 9],
-        houLineup: oldLineup,
-        currentBatter: this.state.houBatters[oldLineup % 9]
-      });
+    } else if (result === 'strikeout' || result === 'batted out') {
+      let outs = this.state.currentOut + 1;
+      let oldInning = this.state.currentInning;
+      if (outs !== 3) {
+        if (oldInning % 2 === 1) {
+          let oldLineup = this.state.wasLineup + 1;
+          this.setState({
+            currentOut: outs,
+            wasBatter: this.state.wasBatters[oldLineup % 9],
+            wasLineup: oldLineup,
+            currentBatter: this.state.wasBatters[oldLineup % 9]
+          });
+        } else {
+          let oldLineup = this.state.houLineup + 1;
+          this.setState({
+            currentOut: outs,
+            houBatter: this.state.houBatters[oldLineup % 9],
+            houLineup: oldLineup,
+            currentBatter: this.state.houBatters[oldLineup % 9]
+          });
+        }
+      } else {
+        if (oldInning % 2 === 1) {
+          let oldLineup = this.state.wasLineup + 1;
+          this.setState({
+            currentOut: 0,
+            runner1: false,
+            runner2: false,
+            runner3: false,
+            wasBatter: this.state.wasBatters[oldLineup % 9],
+            wasLineup: oldLineup,
+            currentBatter: this.state.houBatter,
+            currentPitcher: this.state.wasPitcher,
+            currentInning: oldInning + 1
+          })
+        } else {
+          let oldLineup = this.state.houLineup + 1;
+          this.setState({
+            currentOut: 0,
+            runner1: false,
+            runner2: false,
+            runner3: false,
+            houBatter: this.state.houBatters[oldLineup % 9],
+            houLineup: oldLineup,
+            currentBatter: this.state.wasBatter,
+            currentPitcher: this.state.houPitcher,
+            currentInning: oldInning + 1
+          })
+        }
+      }
     }
   }
 
